@@ -4,7 +4,7 @@ import spotify,image_analysis,json,pygame
 #         spotify.Search().get_album("Untrue").get_cover64()
 #     ).get_pixle_colors()
 # )
-image = image_analysis.ImageAnalyser(spotify.Search().get_album("Over the Sea").get_cover64())
+image = image_analysis.ImageAnalyser(spotify.Search().get_album("in the aeroplane over the sea").get_cover64())
 pixle_size = 10
 width = image._get_width()
 height = image._get_height()
