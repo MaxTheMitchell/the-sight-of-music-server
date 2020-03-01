@@ -4,7 +4,7 @@ import requests,json,base64,time
 class ClientCredentials:
 
     def __init__(self):
-        with open('authorization.json') as auth:
+        with open('back/authorization.json') as auth:
             authorization = json.load(auth)
             self.CLIENT_ID = authorization['client_id']
             self.CLIENT_SECRET = authorization['client_secret']
