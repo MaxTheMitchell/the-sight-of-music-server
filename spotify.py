@@ -1,33 +1,55 @@
-import requests,json,base64
+import requests,json,base64,time
 
 URL = "https://api.spotify.com/v1"
 
-with open('authorization.json') as authorization:
-    authorization = json.load(authorization)
-    CLIENT_ID = authorization['client_id']
-    CLIENT_SECRET = authorization['client_secret']
 
-headers  = {
-    'Accept' : 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer {}'.format("foo")
-}
+class Authorization:
 
-def get_auth_token():
-    return requests.post(
-        url="https://accounts.spotify.com/api/token",
-        headers={
-            "Authorization" : "Basic {}" \
-                .format(
-                    base64.b64encode(
-                        (CLIENT_ID+':'+CLIENT_SECRET).encode()
-                    ).decode("utf-8")
-                )
-        },
-        data={
-            "grant_type" : 'client_credentials'
+    def __init__(self):
+        with open('authorization.json') as auth:
+            authorization = json.load(auth)
+            self.CLIENT_ID = authorization['client_id']
+            self.CLIENT_SECRET = authorization['client_secret']
+        self._refresh_auth_token()
+
+    def get_headers(self):
+        return  {
+        'Accept' : 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': '{} {}'.format(self.token_type,self._get_auth_token())
         }
-    )
+
+    def _get_auth_token(self):
+        if self._token_is_expired():
+           self._refresh_auth_token()
+        return self.auth_token
+
+    def _token_is_expired(self):
+        return self.refresh_time <= time.clock()
+
+    def _refresh_auth_token(self):
+        response = self._make_auth_token_req()
+        self.refresh_time = time.clock()+response['expires_in']
+        self.token_type = response['token_type']
+        self.auth_token = response['access_token']
+
+    def _make_auth_token_req(self):
+        return requests.post(
+            url="https://accounts.spotify.com/api/token",
+            headers={
+                "Authorization" : "Basic {}" \
+                    .format(
+                        base64.b64encode(
+                            (self.CLIENT_ID+':'+self.CLIENT_SECRET).encode()
+                        ).decode("utf-8")
+                    )
+            },
+            data={
+                "grant_type" : 'client_credentials'
+            }
+        ).json()
+
+
 
 class CurrentlyPlaying:
 
@@ -37,6 +59,15 @@ class CurrentlyPlaying:
     def _get_data(self):
         return requests.get(
             url= URL+"/me/player/currently-playing",
-            headers=headers
+            headers=Authorization().get_headers()
         ).json()
         
+class Search:
+
+
+
+    def _get_data(self):
+        return requests.get(
+            url= URL+"/search?q=Untrue&type=album&market=US&limit=1&offset=5",
+            headers=Authorization().get_headers()
+        ).json()
