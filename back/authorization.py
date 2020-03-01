@@ -1,9 +1,7 @@
 import requests,json,base64,time
 
-URL = "https://api.spotify.com/v1"
 
-
-class Authorization:
+class ClientCredentials:
 
     def __init__(self):
         with open('authorization.json') as auth:
@@ -49,25 +47,15 @@ class Authorization:
             }
         ).json()
 
+class AuthorizationCode:
 
+    def __init__(self):
+        with open('authorization.json') as auth:
+            authorization = json.load(auth)
+            self.CLIENT_ID = authorization['client_id']
+            self.CLIENT_SECRET = authorization['client_secret']
 
-class CurrentlyPlaying:
-
-    def get_album(self):
-        return self._get_data()["item"]["album"]
-
-    def _get_data(self):
+    def _user_login(self):
         return requests.get(
-            url= URL+"/me/player/currently-playing",
-            headers=Authorization().get_headers()
-        ).json()
-        
-class Search:
-
-
-
-    def _get_data(self):
-        return requests.get(
-            url= URL+"/search?q=Untrue&type=album&market=US&limit=1&offset=5",
-            headers=Authorization().get_headers()
+            url="https://accounts.spotify.com/authorize"
         ).json()
