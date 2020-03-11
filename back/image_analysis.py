@@ -6,13 +6,22 @@ class ImageAnalyser:
     def __init__(self,url):
         self.image = Image.open(requests.get(url, stream=True).raw)
 
-    def get_adverage_color(self):
+    def get_adverage_colors(self,colors_amount):
+        colors = []
+        pixles = self.get_pixle_colors()
+        for i in range(0,self._pixle_numb(),colors_amount**2):
+            colors.append(self.get_adverage_color(pixles[i:(i+colors_amount**2)]))
+        return colors
+        
+    def get_adverage_color(self,colors = None):
+        if colors == None:
+            colors = self.get_pixle_colors()
         rgb = [0]*3
-        for r,g,b in self.get_pixle_colors():
+        for r,g,b in colors:
             rgb[0]+=r
             rgb[1]+=g
             rgb[2]+=b
-        return tuple(map(lambda color:int(color/self._pixle_numb()),rgb))
+        return tuple(map(lambda color:color//len(colors),rgb))
 
     def get_pixle_colors(self):
         pixles = []

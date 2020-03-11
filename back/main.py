@@ -1,10 +1,15 @@
 import spotify
 import time
+import functools
 
+import spotify,image_analysis
 
-cp = spotify.CurrentlyPlaying()
-search = spotify.Search()
-
-while 1:
-    time.sleep(2)
-    print(cp.get_album().get_name())
+with open("album_colors.txt","w") as txt:
+    txt.write(
+        functools.reduce(lambda total,color :total+str(color)+"\n",
+            image_analysis.ImageAnalyser(
+                spotify.CurrentlyPlaying().get_album().get_cover64()
+            ).get_adverage_colors(16),
+        "")
+    )
+    
