@@ -2,18 +2,22 @@ import requests,json
 import authorization
 
 URL = "https://api.spotify.com/v1"
-AUTHORIZATION = authorization.ClientCredentials()
+AUTHORIZATION = authorization.AuthorizationCode()
 
 class CurrentlyPlaying:
 
     def get_album(self):
-        return self._get_data()["item"]["album"]
+        return Album(self._get_data()["item"]["album"]["id"])
 
     def _get_data(self):
-        return requests.get(
-            url= URL+"/me/player/currently-playing",
-            headers=AUTHORIZATION.get_headers()
-        ).json()
+        try:
+            return requests.get(
+                url= URL+"/me/player/currently-playing?market=US",
+                headers=AUTHORIZATION.get_headers()
+            ).json()
+        except:
+            print("No Currrently Playing Song")
+            return {}
         
 class Search:
 
@@ -29,8 +33,11 @@ class Search:
 
 class Album:
 
-    def __init__(self,id):
-        self.id = id
+    def __init__(self,album_id):
+        self.id = album_id
+
+    def get_name(self):
+        return self._get_data()['name']
 
     def get_cover64(self):
         return self._get_data()['images'][2]['url']
@@ -38,6 +45,15 @@ class Album:
 
     def _get_data(self):
         return requests.get(
-            url= URL+"/albums/{}".format(self.id),
+            url= URL+"/albums/{}?market=US".format(self.id),
+            headers=AUTHORIZATION.get_headers()
+        ).json()
+
+class Profile:
+    AUTHORIZATION = authorization.AuthorizationCode()
+
+    def _get_data(self):
+        return requests.get(
+            url= URL+"/v1/me{}".format(self.id),
             headers=AUTHORIZATION.get_headers()
         ).json()
