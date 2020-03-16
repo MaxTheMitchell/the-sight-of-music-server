@@ -49,7 +49,7 @@ class ClientCredentials:
 
 class AuthorizationCode:
 
-    def __init__(self,scope='user-read-currently-playing'):
+    def __init__(self,scope=''):
         self.access_token = ''
         self.token_type = 'Bearer'
         self.expriation = 0
@@ -72,7 +72,7 @@ class AuthorizationCode:
     def _login_workflow(self):
         print("Go to this url and athorize:\n")
         print(self._get_login_url())
-        self._make__tokens(input("\nenter code in redirected url:\n").strip().replace("\n",''))
+        self._make_tokens(input("\nenter code in redirected url:\n").strip().replace("\n",''))
 
 
     def _handle_tokens(self):
@@ -111,7 +111,7 @@ class AuthorizationCode:
         self._update_expriation(expiration_time_span)
         
 
-    def _make__tokens(self,code): 
+    def _make_tokens(self,code): 
         data = self._access_api_token({
                     "grant_type" : 'authorization_code',
                     "code" : code,

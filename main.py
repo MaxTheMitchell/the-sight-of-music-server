@@ -1,28 +1,24 @@
-# Python 3 server example
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import time
+import flask
+from back.authorization import AuthorizationCode
+app = flask.Flask(__name__)
 
-hostName = "localhost"
-serverPort = 8080
+auth = AuthorizationCode('user-read-currently-playing')
 
+@app.route('/')
+def main():
+    return open("front/main.html","rb").read()
 
+@app.route('/authorize')
+def authorize():
+    return flask.redirect(auth._get_login_url())
 
-class MyServer(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        with open("front/main.html","rb") as html:
-            self.wfile.write(html.read())
+@app.route('/authorize/code/?code=<code>')
+def make_tokens(code):
+    print(code)
+    auth._make_tokens(code)
+    return flask.redirect('/')
+def main():
+    return open("front/main.html","rb").read()
 
-if __name__ == "__main__":        
-    webServer = HTTPServer((hostName, serverPort), MyServer)
-    print("Server started http://%s:%s" % (hostName, serverPort))
-
-    try:
-        webServer.serve_forever()
-    except KeyboardInterrupt:
-        pass
-
-    webServer.server_close()
-    print("Server stopped.")
+if __name__ == "__main__":
+    app.run(host="localhost",port=8080)
