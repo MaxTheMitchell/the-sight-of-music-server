@@ -1,4 +1,4 @@
-import flask
+import flask,os
 from back.authorization import AuthorizationCode
 app = flask.Flask(__name__)
 
@@ -21,4 +21,4 @@ def main():
     return open("front/main.html","rb").read()
 
 if __name__ == "__main__":
-    app.run()
+    app.run("0.0.0.0",os.getenv("PORT"))
