@@ -21,4 +21,4 @@ def main():
     return open("front/main.html","rb").read()
 
 if __name__ == "__main__":
-    app.run(host="localhost",port=8080)
+    app.run()
