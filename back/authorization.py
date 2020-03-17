@@ -1,4 +1,4 @@
-import requests,json,base64,time,os
+import requests,json,base64,time
 
 class ClientCredentials:
 
@@ -49,20 +49,16 @@ class ClientCredentials:
 
 class AuthorizationCode:
 
-    def __init__(self,redirect_uri,scope=''):
+    def __init__(self,cleint_id,client_secret,redirect_uri,scope=''):
         self.access_token = ''
         self.token_type = 'Bearer'
         self.expriation = 0
         self.refresh_token = ''
         self.scope = scope
         self.REDIRECT_URI = redirect_uri
-        self.CLIENT_ID = os.environ['CLIENT_ID']
-        self.CLIENT_SECRET = os.environ['CLIENT_SECRET']
-        # with open('back/authorization.json') as auth:
-        #     authorization = json.load(auth)
-        #     self.CLIENT_ID = authorization['client_id']
-        #     self.CLIENT_SECRET = authorization['client_secret']
-        #     self.REDIRECT_URI = authorization['redirect_uri']
+        self.CLIENT_ID = cleint_id
+        self.CLIENT_SECRET = client_secret
+
 
     def get_headers(self):
         self._handle_tokens()
