@@ -1,4 +1,4 @@
-import requests,json,base64,time
+import requests,json,base64,time,flask
 
 class ClientCredentials:
 
@@ -59,7 +59,6 @@ class AuthorizationCode:
         self.CLIENT_ID = cleint_id
         self.CLIENT_SECRET = client_secret
 
-
     def get_headers(self):
         self._handle_tokens()
         return {
@@ -67,8 +66,30 @@ class AuthorizationCode:
             'Content-Type': 'application/json',
             'Authorization': '{} {}'.format(self.token_type,self.access_token)
             }
+        
+    def is_fully_initalized(self):
+        return self.refresh_token != ''
 
-    def _login_workflow(self):
+    def get_login_url(self):
+        return """
+            https://accounts.spotify.com/authorize?
+            client_id={}
+            &response_type=code
+            &redirect_uri={}
+            &scope={}
+            """.format(self.CLIENT_ID,self.REDIRECT_URI,self.scope
+                ).replace("\n",'').replace(" ","")
+
+    def make_tokens(self,code): 
+        data = self._access_api_token({
+                    "grant_type" : 'authorization_code',
+                    "code" : code,
+                    "redirect_uri" : self.REDIRECT_URI
+                })
+        self.access_token, self.token_type, expiration_time_span, self.refresh_token, self.scope = data.values()
+        self._update_expriation(expiration_time_span)
+
+    def login_workflow(self):
         print("Go to this url and athorize:\n")
         print(self._get_login_url())
         self._make_tokens(input("\nenter code in redirected url:\n").strip().replace("\n",''))
@@ -90,16 +111,6 @@ class AuthorizationCode:
     def _update_expriation(self,time_span):
         self.expriation = int(time.time()+int(time_span))
 
-    def _get_login_url(self):
-        return """
-            https://accounts.spotify.com/authorize?
-            client_id={}
-            &response_type=code
-            &redirect_uri={}
-            &scope={}
-            """.format(self.CLIENT_ID,self.REDIRECT_URI,self.scope
-                ).replace("\n",'').replace(" ","")
-
 
     def _refresh_access_token(self):
         self.access_token, self.token_type, expiration_time_span, self.scope = \
@@ -107,16 +118,6 @@ class AuthorizationCode:
                 "grant_type" : 'refresh_token',
                 "refresh_token": self.refresh_token
             })
-        self._update_expriation(expiration_time_span)
-        
-
-    def _make_tokens(self,code): 
-        data = self._access_api_token({
-                    "grant_type" : 'authorization_code',
-                    "code" : code,
-                    "redirect_uri" : self.REDIRECT_URI
-                })
-        self.access_token, self.token_type, expiration_time_span, self.refresh_token, self.scope = data.values()
         self._update_expriation(expiration_time_span)
 
     def _access_api_token(self,data):
