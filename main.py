@@ -5,9 +5,9 @@ app = flask.Flask(__name__)
 
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = os.getenv("REDIRECT_URI")
 HOST = os.getenv("HOST")
-print(HOST)
+PORT = os.getenv("PORT")
+REDIRECT_URI = "http://{}:{}/authorize/code".format(HOST,PORT)
 
 auth = AuthorizationCode(CLIENT_ID,CLIENT_SECRET,REDIRECT_URI,'user-read-currently-playing')
 current_song = CurrentlyPlaying(auth)
@@ -29,4 +29,4 @@ def make_tokens():
     auth.make_tokens(flask.request.args.get('code', None))
     return flask.redirect('/')
 
-app.run(host="0.0.0.0",port=os.getenv("PORT"))
+app.run(host=HOST,port=PORT)
