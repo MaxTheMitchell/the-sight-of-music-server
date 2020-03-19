@@ -7,7 +7,7 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
-REDIRECT_URI = "{}:{}/authorize/code".format(os.getenv("REDIRECT_URI"),PORT)
+REDIRECT_URI = os.getenv("REDIRECT_URI")+"/authorize/code"
 
 auth = AuthorizationCode(CLIENT_ID,CLIENT_SECRET,REDIRECT_URI,'user-read-currently-playing')
 current_song = CurrentlyPlaying(auth)
