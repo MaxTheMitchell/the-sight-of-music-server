@@ -7,7 +7,7 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
-REDIRECT_URI = "http://{}:{}/authorize/code".format(HOST,PORT)
+REDIRECT_URI = os.getenv("REDIRECT_URI")
 
 auth = AuthorizationCode(CLIENT_ID,CLIENT_SECRET,REDIRECT_URI,'user-read-currently-playing')
 current_song = CurrentlyPlaying(auth)
@@ -18,6 +18,7 @@ def main():
         return open("front/main.html","rb").read() +\
              bytes("<img src={}>".format(
                  current_song.get_album().get_cover640()),'utf-8')
+    return open("front/main.html","rb").read()
     # return flask.redirect('/authorize')
 
 @app.route('/authorize')
