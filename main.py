@@ -29,4 +29,4 @@ def make_tokens():
     auth.make_tokens(flask.request.args.get('code', None))
     return flask.redirect('/')
 
-app.run(host=HOST,port=PORT)
+app.run(host="0.0.0.0",port=PORT)
