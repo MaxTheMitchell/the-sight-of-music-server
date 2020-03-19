@@ -3,15 +3,11 @@ from back.authorization import AuthorizationCode
 from back.spotify import CurrentlyPlaying
 app = flask.Flask(__name__)
 
-with open('back/authorization.json') as auth:
-    authorization = json.load(auth)
-    CLIENT_ID = authorization['client_id']
-    CLIENT_SECRET = authorization['client_secret']
-    REDIRECT_URI = authorization['redirect_uri']
-
-# CLIENT_ID = os.getenv("CLIENT_ID")
-# CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-# REDIRECT_URI = "https://localhost:8080/authorize/code/"
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+HOST = os.getenv("HOST")
+print(HOST)
 
 auth = AuthorizationCode(CLIENT_ID,CLIENT_SECRET,REDIRECT_URI,'user-read-currently-playing')
 current_song = CurrentlyPlaying(auth)
@@ -33,5 +29,4 @@ def make_tokens():
     auth.make_tokens(flask.request.args.get('code', None))
     return flask.redirect('/')
 
-app.run(host="localhost",port="8080")
-# app.run(host="0.0.0.0",port=os.getenv("PORT"))
+app.run(host="0.0.0.0",port=os.getenv("PORT"))
