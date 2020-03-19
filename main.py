@@ -18,7 +18,7 @@ def main():
         return open("front/main.html","rb").read() +\
              bytes("<img src={}>".format(
                  current_song.get_album().get_cover640()),'utf-8')
-    return flask.redirect('/authorize')
+    # return flask.redirect('/authorize')
 
 @app.route('/authorize')
 def authorize():
