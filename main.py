@@ -16,7 +16,7 @@ current_song = CurrentlyPlaying(auth)
 def main():
     if auth.is_fully_initalized():
         return open("front/main.html","rb").read() +\
-             bytes("<img src={}>".format(
+             bytes("<h1>Currently Playing:\n</h1><img src={}>".format(
                  current_song.get_album().get_cover640()),'utf-8')
     return open("front/main.html","rb").read()
     # return flask.redirect('/authorize')

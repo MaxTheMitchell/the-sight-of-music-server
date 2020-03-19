@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <meta http-equiv="refresh" content="5" >
+<style>
+    .myButton {
+	background-color:#44c767;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+    }
+    .myButton:hover {
+        background-color:#5cbf2a;
+    }
+    .myButton:active {
+        position:relative;
+        top:1px;
+    }
+</style>
 <html>
     <head>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <title>The Sight of Music</title>
     </head>
-    <body>
-
+    <body align="center" bgcolor="#fbf7f5">
         <h1>The Sight of Music</h1>
         <form action="/authorize" method="GET">
-            <input type="submit" value="authorize" />
+            <input type="submit" class="myButton" value="authorize" />
         </form>
     </body>
 </html>
