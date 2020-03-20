@@ -37,4 +37,8 @@ def make_tokens():
 def get_pixles_in_album():
     return str(ImageAnalyser(current_song.get_cover64()).get_pixle_colors())
 
+@app.route('/image/pixles/<numb>')
+def get_numb_pixles(numb):
+    return str(ImageAnalyser(current_song.get_cover64()).get_adverage_colors(int(numb)))
+
 app.run(host="0.0.0.0",port=PORT)
