@@ -12,9 +12,8 @@ class ImageAnalyser:
         for x in range(int(resolution)):
             html += "<tr>"
             for y in range(int(resolution)):
-                html += '<td style="color:rgb{}">@</td>'.format(self._get_pixle(img,x,y))
+                html += '<td style="color:rgb{}" size="1">@</td>'.format(self._get_pixle(img,x,y))
             html += "</tr>"
-        print(html)
         return bytes(html + "</table>",'utf-8')
 
     def get_adverage_color(self):

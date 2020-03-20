@@ -21,6 +21,9 @@ class CurrentlyPlaying:
 
     def get_cover64(self):
         return self._get_album()['images'][2]['url']
+    
+    def get_cover300(self):
+        return self._get_album()['images'][1]['url']
 
     def get_cover640(self):
         return self._get_album()['images'][0]['url']
@@ -65,6 +68,9 @@ class Album:
 
     def get_cover64(self):
         return self._get_data()['images'][2]['url']
+
+    def get_cover300(self):
+        return self._get_data()['images'][1]['url']
 
     def get_cover640(self):
         return self._get_data()['images'][0]['url']

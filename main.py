@@ -35,7 +35,7 @@ def make_tokens():
 
 @app.route('/image/pixles')
 def get_pixles_in_album():
-    return str(ImageAnalyser(current_song.get_cover64()).get_pixles())
+    return str(ImageAnalyser(current_song.get_cover640()).get_pixles())
 
 @app.route('/image/pixles/<numb>')
 def get_numb_pixles(numb):
@@ -43,6 +43,13 @@ def get_numb_pixles(numb):
 
 @app.route('/image/display/<resolution>')
 def get_image_at_resolution(resolution):
-    return ImageAnalyser(current_song.get_cover64()).get_html_askii_display(resolution)
+    resolution = int(resolution)
+    if resolution <= 64:
+        img = current_song.get_cover64()
+    elif resolution <= 300:
+        img = current_song.get_cover300()
+    else:
+        return "{} is an invalid resolution".format(resolution)
+    return ImageAnalyser(img).get_html_askii_display(resolution)
 
 app.run(host="0.0.0.0",port=PORT)
