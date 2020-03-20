@@ -90,18 +90,9 @@ class AuthorizationCode:
         self.access_token, self.token_type, expiration_time_span, self.refresh_token, self.scope = data.values()
         self._update_expriation(expiration_time_span)
 
-    def login_workflow(self):
-        print("Go to this url and athorize:\n")
-        print(self._get_login_url())
-        self._make_tokens(input("\nenter code in redirected url:\n").strip().replace("\n",''))
-
-
     def _handle_tokens(self):
         if self._is_expired():
-            if self._no_access_token():
-                self._login_workflow()
-            else:
-                self._refresh_access_token()
+            self._refresh_access_token()
 
     def _no_access_token(self):
         return self.access_token == ''
@@ -110,7 +101,7 @@ class AuthorizationCode:
         return self.expriation <= time.time()
 
     def _update_expriation(self,time_span):
-        self.expriation = int(time.time()+int(time_span))
+        self.expriation = int(time.time()+int(time_span*.9))
 
 
     def _refresh_access_token(self):
@@ -118,7 +109,8 @@ class AuthorizationCode:
             self._access_api_token({
                 "grant_type" : 'refresh_token',
                 "refresh_token": self.refresh_token
-            })
+            }).values()
+        print(self.access_token)
         self._update_expriation(expiration_time_span)
 
     def _access_api_token(self,data):
