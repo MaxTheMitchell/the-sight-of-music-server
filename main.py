@@ -35,11 +35,11 @@ def make_tokens():
 
 @app.route('/image/pixles')
 def get_pixles_in_album():
-    return str(ImageAnalyser(current_song.get_cover640()).get_pixles())
+    return str(ImageAnalyser(current_song.get_cover64()).get_pixles())
 
 @app.route('/image/pixles/<numb>')
 def get_numb_pixles(numb):
-    return str(ImageAnalyser(current_song.get_cover64()).get_adverage_colors(int(numb)))
+    return str(ImageAnalyser(current_song.get_cover64()).get_pixles(int(numb)))
 
 @app.route('/image/display/<resolution>')
 def get_image_at_resolution(resolution):

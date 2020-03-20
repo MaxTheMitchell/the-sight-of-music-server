@@ -8,7 +8,7 @@ class ImageAnalyser:
 
     def get_html_askii_display(self,resolution):
         html = '<table align="center">'
-        img = self.alter_resolution(int(resolution))
+        img = self._alter_resolution(int(resolution))
         for x in range(int(resolution)):
             html += "<tr>"
             for y in range(int(resolution)):
@@ -19,21 +19,15 @@ class ImageAnalyser:
     def get_adverage_color(self):
         return self.get_adverage_colors(1)
 
-    def get_adverage_colors(self,resolution):
-        return self._get_pixle_colors(self.alter_resolution(resolution))
+    def get_pixles(self,amount=64):
+        return self._get_pixle_colors(self._alter_resolution(amount))
 
-    def alter_resolution(self,resolution):
-        return self.image.draft("RGB",(resolution,resolution))
-
-    def get_pixles(self):
-        return self._get_pixle_colors(self.image)
+    def _alter_resolution(self,resolution):
+        self.image.draft("RGB",(resolution,resolution))
+        return self.image
 
     def _get_pixle_colors(self,image):
-        pixles = []
-        for x in range(self._get_width(image)):
-            for y in range(self._get_height(image)):
-                pixles.append(self._get_pixle(image,x,y))
-        return pixles
+        return list(self.image.getdata())
 
     def _get_pixle(self,image,x,y):
         return self.image.load()[y,x]
