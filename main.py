@@ -17,7 +17,7 @@ def main():
     if auth.is_fully_initalized():
         return open("front/main.html","rb").read() +\
              bytes("<h1>Currently Playing:\n</h1><img src={}>".format(
-                 current_song.get_album().get_cover640()),'utf-8')
+                 current_song.get_cover640()),'utf-8')
     return flask.redirect('/authorize')
 
 @app.route('/authorize')

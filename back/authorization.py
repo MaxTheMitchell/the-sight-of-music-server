@@ -110,7 +110,6 @@ class AuthorizationCode:
                 "grant_type" : 'refresh_token',
                 "refresh_token": self.refresh_token
             }).values()
-        print(self.access_token)
         self._update_expriation(expiration_time_span)
 
     def _access_api_token(self,data):
