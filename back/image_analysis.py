@@ -6,38 +6,44 @@ class ImageAnalyser:
     def __init__(self,url):
         self.image = Image.open(requests.get(url, stream=True).raw)
 
-    def get_adverage_colors(self,colors_amount):
-        colors = []
-        pixles = self.get_pixle_colors()
-        for i in range(0,self._pixle_numb(),colors_amount**2):
-            colors.append(self.get_adverage_color(pixles[i:(i+colors_amount**2)]))
-        return colors
-        
-    def get_adverage_color(self,colors = None):
-        if colors == None:
-            colors = self.get_pixle_colors()
-        rgb = [0]*3
-        for r,g,b in colors:
-            rgb[0]+=r
-            rgb[1]+=g
-            rgb[2]+=b
-        return tuple(map(lambda color:color//len(colors),rgb))
+    def get_html_askii_display(self,resolution):
+        html = '<table align="center">'
+        img = self.alter_resolution(int(resolution))
+        for x in range(int(resolution)):
+            html += "<tr>"
+            for y in range(int(resolution)):
+                html += '<td style="color:rgb{}">@</td>'.format(self._get_pixle(img,x,y))
+            html += "</tr>"
+        print(html)
+        return bytes(html + "</table>",'utf-8')
 
-    def get_pixle_colors(self):
+    def get_adverage_color(self):
+        return self.get_adverage_colors(1)
+
+    def get_adverage_colors(self,resolution):
+        return self._get_pixle_colors(self.alter_resolution(resolution))
+
+    def alter_resolution(self,resolution):
+        return self.image.resize((resolution,resolution))
+
+    def get_pixles(self):
+        return self._get_pixle_colors(self.image)
+
+    def _get_pixle_colors(self,image):
         pixles = []
-        for x in range(self._get_width()):
-            for y in range(self._get_height()):
-                pixles.append(self.get_pixle(x,y))
+        for x in range(self._get_width(image)):
+            for y in range(self._get_height(image)):
+                pixles.append(self._get_pixle(image,x,y))
         return pixles
 
-    def get_pixle(self,x,y):
+    def _get_pixle(self,image,x,y):
         return self.image.load()[y,x]
 
-    def _get_height(self):
-        return self.image.height
+    def _get_height(self,image):
+        return image.height
     
-    def _get_width(self):
-        return self.image.width
+    def _get_width(self,image):
+        return image.width
     
     def _pixle_numb(self):
         return self._get_width()*self._get_height()

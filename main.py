@@ -15,9 +15,9 @@ current_song = CurrentlyPlaying(auth)
 @app.route('/')
 def main():
     if auth.is_fully_initalized():
-        return open("front/main.html","rb").read() +\
+        return (open("front/main.html","rb").read()+ \
              bytes("<h1>Currently Playing:\n</h1><img src={}>".format(
-                 current_song.get_cover640()),'utf-8')
+                 current_song.get_cover640()),'utf-8'))
     return flask.redirect('/authorize')
 
 @app.route('/authorize')
@@ -35,10 +35,14 @@ def make_tokens():
 
 @app.route('/image/pixles')
 def get_pixles_in_album():
-    return str(ImageAnalyser(current_song.get_cover64()).get_pixle_colors())
+    return str(ImageAnalyser(current_song.get_cover64()).get_pixles())
 
 @app.route('/image/pixles/<numb>')
 def get_numb_pixles(numb):
     return str(ImageAnalyser(current_song.get_cover64()).get_adverage_colors(int(numb)))
+
+@app.route('/image/display/<resolution>')
+def get_image_at_resolution(resolution):
+    return ImageAnalyser(current_song.get_cover64()).get_html_askii_display(resolution)
 
 app.run(host="0.0.0.0",port=PORT)
