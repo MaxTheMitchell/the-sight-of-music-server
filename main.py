@@ -1,11 +1,11 @@
 import flask,os,json
 from back.authorization import AuthorizationCode
 from back.spotify import CurrentlyPlaying
+from back.image_analysis import ImageAnalyser
 app = flask.Flask(__name__)
 
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
 REDIRECT_URI = os.getenv("REDIRECT_URI")+"/authorize/code"
 
@@ -28,10 +28,13 @@ def authorize():
 def login():
     return flask.redirect(auth.get_login_url(True))
 
-
 @app.route('/authorize/code')
 def make_tokens():
     auth.make_tokens(flask.request.args.get('code', None))
     return flask.redirect('/')
+
+@app.route('/image/pixles')
+def get_pixles_in_album():
+    return str(ImageAnalyser(current_song.get_cover64()).get_pixle_colors())
 
 app.run(host="0.0.0.0",port=PORT)

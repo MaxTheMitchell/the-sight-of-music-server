@@ -10,7 +10,7 @@ class CurrentlyPlaying:
                         "images": [
                             {"url": 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.imgur.com%2FLFhmVaN.jpg&f=1&nofb=1'},
                             {"url": 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.imgur.com%2FLFhmVaN.jpg&f=1&nofb=1'},
-                            {"url": 'back/nothing_playing'}
+                            {"url": 'https://i.postimg.cc/HnNZbFqq/nothing-playing.jpg'}
                         ]
                     }
                 }
@@ -36,7 +36,7 @@ class CurrentlyPlaying:
             ).json()
         except:
             print("No Currrently Playing Song")
-            return FAKE_DATA
+            return self.FAKE_DATA
         
 class Search:
 
