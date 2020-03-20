@@ -44,9 +44,9 @@ def get_numb_pixles(numb):
 @app.route('/image/display/<resolution>')
 def get_image_at_resolution(resolution):
     resolution = int(resolution)
-    if resolution <= 64:
+    if resolution < 64:
         img = current_song.get_cover64()
-    elif resolution <= 300:
+    elif resolution < 300:
         img = current_song.get_cover300()
     else:
         return "{} is an invalid resolution".format(resolution)
