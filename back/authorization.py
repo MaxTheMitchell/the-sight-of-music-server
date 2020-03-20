@@ -70,14 +70,15 @@ class AuthorizationCode:
     def is_fully_initalized(self):
         return self.refresh_token != ''
 
-    def get_login_url(self):
+    def get_login_url(self,show_dialog=False):
         return """
             https://accounts.spotify.com/authorize?
             client_id={}
             &response_type=code
             &redirect_uri={}
             &scope={}
-            """.format(self.CLIENT_ID,self.REDIRECT_URI,self.scope
+            &show_dialog={}
+            """.format(self.CLIENT_ID,self.REDIRECT_URI,self.scope,show_dialog
                 ).replace("\n",'').replace(" ","")
 
     def make_tokens(self,code): 

@@ -18,12 +18,16 @@ def main():
         return open("front/main.html","rb").read() +\
              bytes("<h1>Currently Playing:\n</h1><img src={}>".format(
                  current_song.get_album().get_cover640()),'utf-8')
-    return open("front/main.html","rb").read()
-    # return flask.redirect('/authorize')
+    return flask.redirect('/authorize')
 
 @app.route('/authorize')
 def authorize():
     return flask.redirect(auth.get_login_url())
+
+@app.route('/authorize/login')
+def login():
+    return flask.redirect(auth.get_login_url(True))
+
 
 @app.route('/authorize/code')
 def make_tokens():
