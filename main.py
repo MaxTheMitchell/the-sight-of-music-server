@@ -41,6 +41,11 @@ def get_pixles_in_album():
 def get_numb_pixles(numb):
     return str(ImageAnalyser(current_song.get_cover64()).get_pixles(int(numb)))
 
+@app.route('/image/pixles/<numb>/<part>')
+def get_part_of_numb_pixles(numb,part):
+    length = 1000
+    return get_numb_pixles(numb)[length*int(part):length*(int(part)+1)]
+
 @app.route('/image/display/<resolution>')
 def get_image_at_resolution(resolution):
     resolution = int(resolution)
