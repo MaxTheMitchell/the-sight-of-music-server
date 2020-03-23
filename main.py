@@ -57,4 +57,16 @@ def get_image_at_resolution(resolution):
         return "{} is an invalid resolution".format(resolution)
     return ImageAnalyser(img).get_html_askii_display(resolution)
 
+on = False
+@app.route('/on')
+def get_on():
+    global on
+    return str(on)
+
+@app.route('/on/toggle')
+def toggle_on():
+    global on
+    on = not on 
+    return flask.redirect('/')
+
 app.run(host="0.0.0.0",port=PORT)
