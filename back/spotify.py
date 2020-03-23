@@ -29,7 +29,11 @@ class CurrentlyPlaying:
         return self._get_album()['images'][0]['url']
 
     def _get_album(self):
-        return self._get_data()["item"]["album"]
+        try:
+            return self._get_data()["item"]["album"]
+        except:
+            print("currently playing is not an album")
+            return self.FAKE_DATA["item"]["album"]
 
     def _get_data(self):
         try:
