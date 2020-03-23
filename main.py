@@ -41,6 +41,13 @@ def get_pixles_in_album():
 def get_numb_pixles(numb):
     return str(ImageAnalyser(current_song.get_cover64()).get_pixles(int(numb)))
 
+@app.route('/image/pixles/<numb>/section')
+def get_section(numb):
+    return get_numb_pixles(numb)[
+        int(flask.request.args.get('start', None)):
+        int(flask.request.args.get('end', None))
+        ]
+
 @app.route('/image/pixles/<numb>/<pixel>')
 def get_pixle(numb,pixel):
     return str(ImageAnalyser(current_song.get_cover64()).get_pixle(int(numb),int(pixel)))
@@ -57,8 +64,6 @@ def get_pixle_green(numb,pixel):
 def get_pixle_blue(numb,pixel):
     return get_pixle(numb,pixel).split(',')[2].replace(')','')
 
-
-
 @app.route('/image/display/<resolution>')
 def get_image_at_resolution(resolution):
     resolution = int(resolution)
@@ -70,16 +75,5 @@ def get_image_at_resolution(resolution):
         return "{} is an invalid resolution".format(resolution)
     return ImageAnalyser(img).get_html_askii_display(resolution)
 
-on = False
-@app.route('/on')
-def get_on():
-    global on
-    return str(on)
-
-@app.route('/on/toggle')
-def toggle_on():
-    global on
-    on = not on 
-    return flask.redirect('/')
 
 app.run(host="0.0.0.0",port=PORT)
