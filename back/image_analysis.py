@@ -22,12 +22,12 @@ class ImageAnalyser:
     def get_subsection_of_pixles(self,amount,start,end):
         return self.get_pixles(amount)[start:end]
 
-    def get_pixles(self,amount=64,expected=False):
-        if not expected:
-            expected = amount**2
-        pixels = self._get_pixle_colors(self._alter_resolution(amount))
-        if len(pixels) < expected:
-            return self.get_pixles(amount,(amount+1)**2)
+    def get_pixles(self,amount=64):
+        return self._check_for_monotone(self._get_pixle_colors(self._alter_resolution(amount)))
+
+    def _check_for_monotone(self,pixels):
+        if isinstance(pixels[0],int):
+            return [(pix,pix,pix) for pix in pixels]
         return pixels
     
     def get_pixle(self,resolution,pixle):
