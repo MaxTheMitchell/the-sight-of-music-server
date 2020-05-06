@@ -19,8 +19,16 @@ class ImageAnalyser:
     def get_adverage_color(self):
         return self.get_adverage_colors(1)
 
-    def get_pixles(self,amount=64):
-        return self._get_pixle_colors(self._alter_resolution(amount))
+    def get_subsection_of_pixles(self,amount,start,end):
+        return self.get_pixles(amount)[start:end]
+
+    def get_pixles(self,amount=64,expected=False):
+        if not expected:
+            expected = amount**2
+        pixels = self._get_pixle_colors(self._alter_resolution(amount))
+        if len(pixels) < expected:
+            return self.get_pixles(amount,(amount+1)**2)
+        return pixels
     
     def get_pixle(self,resolution,pixle):
         img = self._alter_resolution(resolution)
