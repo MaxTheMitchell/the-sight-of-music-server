@@ -49,6 +49,14 @@ def get_section(numb):
         int(flask.request.args.get('end', None))
     ))
 
+@app.route('/image/pixles/<numb>/section/reversed')
+def get_reversed_section(numb):
+    return str(ImageAnalyser(current_song.get_cover64()).get_half_reversed_subsection_of_pixles(
+        int(numb),
+        int(flask.request.args.get('start', None)),
+        int(flask.request.args.get('end', None))
+    ))
+
 @app.route('/image/display/<resolution>')
 def get_image_at_resolution(resolution):
     resolution = int(resolution)

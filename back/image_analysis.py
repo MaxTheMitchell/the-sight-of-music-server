@@ -19,8 +19,18 @@ class ImageAnalyser:
     def get_adverage_color(self):
         return self.get_adverage_colors(1)
 
+    def get_half_reversed_subsection_of_pixles(self,amount,start,end):
+        return self.get_half_reversed_pixles(amount)[start:end]
+
     def get_subsection_of_pixles(self,amount,start,end):
         return self.get_pixles(amount)[start:end]
+
+    def get_half_reversed_pixles(self,side_length):
+        pixles = self.get_pixles(side_length)
+        for i in range(side_length):
+            if i%2 == 1:
+                pixles[i*side_length:(i+1)*side_length] = list(reversed(pixles[i*side_length:(i+1)*side_length]))
+        return pixles
 
     def get_pixles(self,side_length=64):
         return self._reduce_size(
