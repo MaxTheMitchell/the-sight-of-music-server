@@ -22,8 +22,25 @@ class ImageAnalyser:
     def get_subsection_of_pixles(self,amount,start,end):
         return self.get_pixles(amount)[start:end]
 
-    def get_pixles(self,amount=64):
-        return self._check_for_monotone(self._get_pixle_colors(self._alter_resolution(amount)))
+    def get_pixles(self,side_length=64):
+        return self._reduce_size(
+            self._check_for_monotone(
+                self._get_pixle_colors(
+                    self._alter_resolution(side_length)
+                    )
+                ),
+                side_length**2
+            )
+
+    def _reduce_size(self,pixels,expected_size):
+        i = 0
+        while len(pixels) > expected_size:
+            pixels[i] = tuple(int(sum(colors)/2) for colors in zip(pixels[i],pixels[i+1]))
+            pixels.pop(i+1)
+            i += 1
+            if i >= len(pixels)-1:
+                i=0
+        return pixels
 
     def _check_for_monotone(self,pixels):
         if isinstance(pixels[0],int):
