@@ -28,7 +28,7 @@ class ImageAnalyser:
     def get_half_reversed_pixles(self,side_length):
         pixles = self.get_pixles(side_length)
         for i in range(side_length):
-            if i%2 == 1:
+            if i%2 == 0:
                 pixles[i*side_length:(i+1)*side_length] = list(reversed(pixles[i*side_length:(i+1)*side_length]))
         return pixles
 
