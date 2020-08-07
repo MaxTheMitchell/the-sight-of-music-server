@@ -22,8 +22,11 @@ class ImageAnalyser:
     def get_half_reversed_subsection_of_pixles(self,amount,start,end):
         return self.get_half_reversed_pixles(amount)[start:end]
 
-    def get_subsection_of_pixles(self,amount,start,end):
-        return self.get_pixles(amount)[start:end]
+    def get_subsection_of_pixles(self,amount,start,end,format565 = False):
+        pixels = self.get_pixles(amount)[start:end]
+        if format565:
+            return self._format_to_565(pixels)
+        return pixels
 
     def get_half_reversed_pixles(self,side_length):
         pixles = self.get_pixles(side_length)
@@ -41,6 +44,8 @@ class ImageAnalyser:
                 ),
                 side_length**2
             )
+    def _format_to_565(self,pixels):
+        return [(((rgb[0] & 0b11111000)<<8) + ((rgb[1] & 0b11111100)<<3) + (rgb[2]>>3)) for rgb in pixels]
 
     def _reduce_size(self,pixels,expected_size):
         i = 0

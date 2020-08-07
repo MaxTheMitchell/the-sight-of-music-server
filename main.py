@@ -43,10 +43,11 @@ def get_numb_pixles(numb):
 
 @app.route('/image/pixles/<numb>/section')
 def get_section(numb):
-    return str(ImageAnalyser(current_song.get_cover64()).get_subsection_of_pixles(
+    return (ImageAnalyser(current_song.get_cover64()).get_subsection_of_pixles(
         int(numb),
         int(flask.request.args.get('start', None)),
-        int(flask.request.args.get('end', None))
+        int(flask.request.args.get('end', None)),
+        bool(flask.request.args.get('format565',False))
     ))
 
 @app.route('/image/pixles/<numb>/section/reversed')
