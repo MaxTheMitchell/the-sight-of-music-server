@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <meta http-equiv="refresh" content="5" >
 <style>
+    .main_img{
+        width: 640px;
+        height: 640px;
+    }
     .myButton {
 	background-color:#44c767;
 	border-radius:28px;
@@ -37,7 +41,23 @@
             <form action="/image/display/64" method="GET">
                 <input type="submit" class="myButton" value="see ascii of album" />
             </form>
+            <button class="myButton" id="custom_img" onclick="addOwnImg()">Add Your Own Image</button>
          </tr>
         </table>
     </body>
 </html>
+
+<script>
+    if(ownImg){
+        document.getElementById("custom_img").innerHTML = "Return to Spotify"
+    }
+    function addOwnImg(){
+        if(!ownImg){
+            fetch(`/image/set?img_url=${prompt("Image Url:","")}`)
+            ownImg = true
+        }else{
+            fetch(`/image/set`)
+            ownImg = false
+        }
+    }
+</script>
