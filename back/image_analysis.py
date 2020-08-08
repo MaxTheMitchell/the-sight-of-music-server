@@ -71,8 +71,7 @@ class ImageAnalyser:
             )
 
     def _alter_resolution(self,resolution):
-        self.image.draft("RGB",(resolution,resolution))
-        return self.image
+        return self.image.resize((resolution,resolution))
 
     def _get_pixle_colors(self,image):
         return list(self.image.getdata())
