@@ -82,7 +82,7 @@ def set_img_url():
 
 def get_img(sixty_four=True):
     global img_url
-    if img_url != "":
+    if img_url != "" and img_url != "null":
         return img_url
     elif sixty_four:
         return current_song.get_cover64()

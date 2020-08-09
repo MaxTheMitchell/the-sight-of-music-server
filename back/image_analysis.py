@@ -8,7 +8,7 @@ class ImageAnalyser:
 
     def get_html_askii_display(self,resolution):
         html = '<table align="center">'
-        img = self._alter_resolution(int(resolution))
+        img = self._alter_resolution(self.image,int(resolution))
         for x in range(int(resolution)):
             html += "<tr>"
             for y in range(int(resolution)):
@@ -39,7 +39,7 @@ class ImageAnalyser:
         return self._reduce_size(
             self._check_for_monotone(
                 self._get_pixle_colors(
-                    self._alter_resolution(side_length)
+                    self._alter_resolution(self.image,side_length)
                     )
                 ),
                 side_length**2
@@ -63,21 +63,21 @@ class ImageAnalyser:
         return pixels
     
     def get_pixle(self,resolution,pixle):
-        img = self._alter_resolution(resolution)
+        img = self._alter_resolution(self.image,resolution)
         return self._get_pixle(
             img,
             pixle%self._get_width(img),
             int(pixle/self._get_height(img))
             )
 
-    def _alter_resolution(self,resolution):
-        return self.image.resize((resolution,resolution))
+    def _alter_resolution(self,image,resolution):
+        return image.resize((resolution,resolution))
 
     def _get_pixle_colors(self,image):
-        return list(self.image.getdata())
+        return list(image.getdata())
 
     def _get_pixle(self,image,x,y):
-        return self.image.load()[y,x]
+        return image.load()[y,x]
 
     def _get_height(self,image):
         return image.height

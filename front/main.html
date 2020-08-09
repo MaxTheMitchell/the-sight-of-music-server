@@ -53,7 +53,7 @@
     }
     function addOwnImg(){
         if(!ownImg){
-            fetch(`/image/set?img_url=${prompt("Image Url:","")}`)
+            fetch(`/image/set?img_url=${prompt("Image Url:","none")}`)
             ownImg = true
         }else{
             fetch(`/image/set`)
