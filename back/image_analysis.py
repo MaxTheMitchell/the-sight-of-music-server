@@ -85,10 +85,7 @@ class ImageAnalyser:
     def _get_width(self,image):
         return image.width
     
-    def _pixle_numb(self):
-        return self._get_width()*self._get_height()
-
     def _adjust_for_black(self,pixel):
-        if sum(pixel) < 60 and not any([p>20 for p in pixel]):
+        if sum(pixel) < 3*35 and not any([p>35 for p in pixel]):
             return (0,0,0)
         return pixel
