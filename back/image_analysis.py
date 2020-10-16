@@ -74,7 +74,7 @@ class ImageAnalyser:
         return image.resize((resolution,resolution))
 
     def _get_pixle_colors(self,image):
-        return list(image.getdata())
+        return [self._adjust_for_black(p) for p in image.getdata())]
 
     def _get_pixle(self,image,x,y):
         return self._adjust_for_black(image.load()[y,x])
