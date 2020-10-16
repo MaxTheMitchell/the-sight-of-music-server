@@ -77,7 +77,7 @@ class ImageAnalyser:
         return list(image.getdata())
 
     def _get_pixle(self,image,x,y):
-        return image.load()[y,x]
+        return self._adjust_for_black(image.load()[y,x])
 
     def _get_height(self,image):
         return image.height
@@ -87,3 +87,8 @@ class ImageAnalyser:
     
     def _pixle_numb(self):
         return self._get_width()*self._get_height()
+
+    def _adjust_for_black(self,pixel):
+        if sum(pixel) < 60 and not any([p>20 for p in pixel]):
+            return (0,0,0)
+        return pixel
