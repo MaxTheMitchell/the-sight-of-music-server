@@ -1,7 +1,9 @@
-import flask,os,json
+import flask,os
+
 from back.authorization import AuthorizationCode
 from back.spotify import CurrentlyPlaying
 from back.image_analysis import ImageAnalyser
+
 app = flask.Flask(__name__)
 
 CLIENT_ID = os.getenv("CLIENT_ID")
